@@ -13,7 +13,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const productData = await Product.findByPk(req.params.id, { include: [{ model: Category }, { model: Tag, through: ProductTag, as: "product_tags" },] });
+    const productData = await Product.findByPk(req.params.id, { include: [{ model: Category }, { model: Tag, through: ProductTag},] });
+    if (!productData) {
+      res.status(404).json({ message: 'No product this ID. Please enter valid ID.' });
+      return;
+    }
     res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
@@ -42,11 +46,12 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  Product.update(req.body, {
-    where: {
-      id: req.params.id,
-    },
-  })
+  Product.update(req.body,
+    {
+      where: {
+        id: req.params.id,
+      },
+    })
     .then((product) => {
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
@@ -83,7 +88,7 @@ router.delete('/:id', async (req, res) => {
         }
       });
     if (!productData) {
-      res.status(404).json({ message: 'No product with this id.' });
+      res.status(404).json({ message: 'No product with this id. Please enter valid ID.' });
       return;
     }
     res.status(200).json(productData);
