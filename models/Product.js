@@ -32,20 +32,20 @@ Product.init(
     },
     category_id: {
       type: DataTypes.INTEGER,
-      refrences: {
-        key: "id",
+      references: {
         model: "category",
-        unique: "false",
+        key: "id",
+        unique: false,
       },
-    },
   },
+},
   {
     sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'product',
-  }
+    modelName: 'products',
+  },
 );
 
 module.exports = Product;

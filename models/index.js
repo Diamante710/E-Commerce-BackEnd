@@ -9,6 +9,12 @@ Product.belongsTo(
   foreignKey: 'category_id',
 });
 
+Category.hasMany(
+  Product, {
+  foreignKey: 'category_id',
+  onDelete: 'CASCADE',
+});
+
 Product.belongsToMany(
   Tag, {
   through: {
@@ -18,11 +24,6 @@ Product.belongsToMany(
   as: 'product_tags'
 });
 
-Category.hasMany(
-  Product, {
-  foreignKey: 'category_id',
-  onDelete: 'CASCADE',
-});
 
 Tag.belongsToMany(
   Product, {
